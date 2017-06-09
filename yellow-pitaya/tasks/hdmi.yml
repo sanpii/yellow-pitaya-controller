@@ -1,0 +1,5 @@
+- name: enable hdmi
+  become: true
+  lineinfile:
+    path: /boot/config.txt
+    line: 'hdmi_safe=1'

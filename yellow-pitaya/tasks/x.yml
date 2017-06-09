@@ -1,0 +1,24 @@
+- name: install xserver
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - xserver-xorg
+    - xserver-xorg-legacy
+    - x11-xserver-utils
+    - xinit
+
+- name: add pi user to tty group
+  become: true
+  user:
+    name: pi
+    groups: tty
+    append: yes
+
+- name: allow any user to launch X11
+  become: true
+  lineinfile:
+    path: /etc/X11/Xwrapper.config
+    regexp: '^allowed_users='
+    line: 'allowed_users=anybody'

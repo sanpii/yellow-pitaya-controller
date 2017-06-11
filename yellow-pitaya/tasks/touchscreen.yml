@@ -1,0 +1,28 @@
+- name: install xinput and xserver-xorg-input-evdev
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - xinput
+    - xserver-xorg-input-evdev
+
+- name: create /etc/X11/xorg.conf.d
+  become: true
+  file:
+    path: /etc/X11/xorg.conf.d
+    state: directory
+
+- name: configure touchscreen
+  become: true
+  blockinfile:
+    path: /etc/X11/xorg.conf.d/99-calibration.conf
+    create: yes
+    block: |
+      Section "InputClass"
+          Identifier "touchscreen"
+          Driver "evdev"
+          MatchProduct "eGalax Inc. USB TouchController"
+          Option "Calibration" "1910 142 230 1844"
+          Option "SwapAxes" "1"
+      EndSection

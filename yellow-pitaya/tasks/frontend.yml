@@ -1,0 +1,52 @@
+- name: install git
+  package:
+    name: git
+    state: present
+
+- name: install rust
+  command: 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
+  args:
+    creates: ~/.cargo/bin/rustup
+
+- name: configure cargo
+  lineinfile:
+    path: ~/.bashrc
+    line: '. $HOME/.cargo/env'
+
+- name: enable rust nightly
+  command: '~/.cargo/bin/rustup default nightly'
+
+- name: clone frontend sources
+  git:
+    repo: https://github.com/yellow-pitaya/frontend.git
+    dest: ~/frontend
+    update: no
+
+- name: install frontend dependencies
+  package:
+    name: libgtk-3-dev
+    state: present
+
+- name: compile frontend
+  command: '~/.cargo/bin/cargo build --release'
+  args:
+    chdir: ~/frontend
+    creates: ~/frontend/target/release/yellow-pitaya
+
+- name: copy user configuration
+  copy:
+    src: xinitrc
+    dest: ~/.xinitrc
+
+- name: copy yellow-pitaya service
+  become: true
+  copy:
+    src: yellow-pitaya.service
+    dest: /etc/systemd/system/
+
+- name: enable yellow-pitaya service
+  become: true
+  service:
+    name: yellow-pitaya
+    state: started
+    enabled: yes

@@ -32,21 +32,3 @@
   args:
     chdir: ~/frontend
     creates: ~/frontend/target/release/yellow-pitaya
-
-- name: copy user configuration
-  copy:
-    src: xinitrc
-    dest: ~/.xinitrc
-
-- name: copy yellow-pitaya service
-  become: true
-  copy:
-    src: yellow-pitaya.service
-    dest: /etc/systemd/system/
-
-- name: enable yellow-pitaya service
-  become: true
-  service:
-    name: yellow-pitaya
-    state: started
-    enabled: yes

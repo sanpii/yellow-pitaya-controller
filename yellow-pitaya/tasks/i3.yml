@@ -1,0 +1,14 @@
+- name: install i3
+  package:
+    name: i3
+    state: present
+
+- name: copy i3 configuration
+  copy:
+    src: i3.conf
+    dest: ~/.config/i3/config
+
+- name: copy xinitrc
+  copy:
+    src: xinitrc
+    dest: ~/.xinitrc

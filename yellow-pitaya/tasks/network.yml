@@ -1,0 +1,5 @@
+- name: copy wpa_supplicant configuration
+  become: true
+  template:
+    src: files/wpa_supplicant.conf.j2
+    dest: /etc/wpa_supplicant/wpa_supplicant.conf

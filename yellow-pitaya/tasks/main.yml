@@ -3,3 +3,4 @@
 - include: i3.yml
 - include: touchscreen.yml
 - include: frontend.yml
+- include: network.yml

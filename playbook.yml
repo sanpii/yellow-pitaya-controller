@@ -1,3 +1,8 @@
 - hosts: lab
   roles:
     - yellow-pitaya
+
+- hosts: redpitaya
+  gather_facts: no
+  roles:
+    - redpitaya

@@ -1,0 +1,5 @@
+- name: install python
+  become: true
+  raw: apt install -y python
+
+- include: scpi.yml

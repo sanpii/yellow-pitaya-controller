@@ -1,0 +1,5 @@
+- name: copy scpi zeroconf
+  become: true
+  copy:
+    src: scpi.service
+    dest: /etc/avahi/services/

@@ -1,4 +1,46 @@
-- name: copy scpi zeroconf
+- name: cross compiling scpi-server
+  local_action: command cargo build --target armv7-unknown-linux-gnueabihf --release
+  args:
+    chdir: scpi-server
+    creates: target/armv7-unknown-linux-gnueabihf/release/scpi-server
+
+- name: creates /opt/yellow-pitaya directories
+  become: true
+  file:
+    path: "/opt/yellow-pitaya/{{ item }}"
+    state: directory
+  with_items:
+    - .
+    - bin
+
+- name: install scpi-server
+  become: true
+  copy:
+    src: scpi-server/target/armv7-unknown-linux-gnueabihf/release/scpi-server
+    dest: /opt/yellow-pitaya/bin/
+    mode: 0755
+
+- name: copy systemd service
+  become: true
+  copy:
+    src: yellow_pitaya_scpi.service
+    dest: /etc/systemd/system/
+
+- name: disable legacy scpi server
+  become: true
+  service:
+    name: redpitaya_scpi
+    state: stopped
+    enabled: no
+
+- name: enable scpi server
+  become: true
+  service:
+    name: yellow_pitaya_scpi
+    state: started
+    enabled: yes
+
+- name: copy avahi service
   become: true
   copy:
     src: scpi.service

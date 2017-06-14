@@ -97,4 +97,4 @@ bar {
 }
 
 for_window [title="Yellow Pitaya"] fullscreen;
-exec --no-startup-id i3-msg 'workspace 1; exec ~/frontend/target/release/yellow-pitaya 192.168.1.5:5000'
+exec --no-startup-id i3-msg 'workspace 1; exec ~/frontend/target/release/yellow-pitaya {{ redpitaya_hostname }}:5000'

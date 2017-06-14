@@ -4,8 +4,8 @@
     state: present
 
 - name: copy i3 configuration
-  copy:
-    src: i3.conf
+  template:
+    src: files/i3.conf.j2
     dest: ~/.config/i3/config
 
 - name: copy xinitrc
